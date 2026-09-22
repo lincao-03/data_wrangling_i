@@ -5,8 +5,9 @@ output: github_document
 
 This file is for doing ata import.
 
-```{r echo = F}
+```{r}
 library(tidyverse)
+library(readxl)
 ```
 
 Import first dataset.
@@ -47,7 +48,31 @@ skimr::skim(pups_df)
 ```
 
 
+## Oh excel...
 
+```{r}
+mlb_df = read_excel("data/mlb11.xlsx")
+```
+
+Look at the data!
+
+```{r}
+mlb_df
+```
+
+Import FOTR words
+
+```{r}
+fortr_df = read_excel("data/LotR_Words.xlsx", range = "B3:D6")
+fortr_df
+```
+
+What about TT
+
+```{r}
+tt_df = read_excel("data/LotR_Words.xlsx", range = "F3:H6")
+tt_df
+```
 
 
 
