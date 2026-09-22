@@ -13,7 +13,10 @@ Import first dataset.
 
 ```{r}
 litters_df = 
-  read_csv(file = "data/FAS_litters.csv", skip = 0)
+  read_csv(
+    file = "data/FAS_litters.csv", skip = 0,
+    na = c("", "NA", ".")
+  )
 litters_df = janitor::clean_names(litters_df)
 ```
 
@@ -21,7 +24,7 @@ Import second dataset.
 
 ```{r}
 pups_df = 
-  read_csv("data/FAS_pups.csv", skip = 3)
+  read_csv("data/FAS_pups.csv", skip = 3, na = c("", "NA", "."))
 pups_df = janitor::clean_names(pups_df)
 ```
 
