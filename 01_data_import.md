@@ -20,6 +20,7 @@ library(tidyverse)
 
 ``` r
 library(readxl)
+library(haven) ##for sas
 ```
 
 Import first dataset.
@@ -217,7 +218,8 @@ mlb_df
 Import FOTR words
 
 ``` r
-fortr_df = read_excel("data/LotR_Words.xlsx", range = "B3:D6")
+fortr_df = 
+  read_excel("data/LotR_Words.xlsx", range = "B3:D6")
 fortr_df
 ```
 
@@ -231,7 +233,8 @@ fortr_df
 What about TT
 
 ``` r
-tt_df = read_excel("data/LotR_Words.xlsx", range = "F3:H6")
+tt_df = 
+  read_excel("data/LotR_Words.xlsx", range = "F3:H6")
 tt_df
 ```
 
@@ -241,3 +244,14 @@ tt_df
     ## 1 Elf       331   513
     ## 2 Hobbit      0  2463
     ## 3 Man       401  3589
+
+## Import SAS
+
+Read in the PULSE dataset
+
+``` r
+pulse_df = 
+  read_sas("data/public_pulse_data.sas7bdat")
+
+pulse_df = janitor::clean_names(pulse_df)
+```
