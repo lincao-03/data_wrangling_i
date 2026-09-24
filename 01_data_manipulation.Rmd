@@ -1,0 +1,75 @@
+---
+title: "Data Manipulation"
+author: "Lin Cao"
+date: "2026-09-24"
+output: github_document
+---
+
+This file is for doing data manipulation.
+```{r}
+library(tidyverse)
+```
+
+```{r}
+litters_df = 
+  read_csv(
+    file = "data/FAS_litters.csv", skip = 0,
+    na = c("", "NA", ".")
+  )
+litters_df = janitor::clean_names(litters_df)
+```
+
+
+```{r}
+pups_df = 
+  read_csv("data/FAS_pups.csv", skip = 3, na = c("", "NA", "."))
+pups_df = janitor::clean_names(pups_df)
+```
+
+## `select` some variables
+
+```{r}
+select(litters_df, group, litter_number)
+
+select(litters_df, group:gd_of_birth)
+
+select(litters_df, -group)
+
+select(litters_df, starts_with("gd"))
+
+select(litters_df, starts_with("gd"), group)
+
+select(litters_df, GROUP = group, everything())
+
+select(litters_df, -starts_with("gd"))
+```
+
+a couple of alternatives
+```{r}
+rename(litters_df, GROUP = group)
+
+relocate(litters_df, litter_number, gd0_weight)
+```
+
+In the pups data, seelct litter number, sex, and PD ears.
+
+```{r}
+select(pups_df, litter_number, sex, pd_ears)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
