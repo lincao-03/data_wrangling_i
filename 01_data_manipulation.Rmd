@@ -26,29 +26,29 @@ pups_df =
 pups_df = janitor::clean_names(pups_df)
 ```
 
-## `select` some variables
+## `select` some variables (column)
 
 ```{r}
 select(litters_df, group, litter_number) ##选中group和litter_number
 
 select(litters_df, group:gd_of_birth) ##从group到gd_of_birth
 
-select(litters_df, -group) ## 
+select(litters_df, -group) ##删除group
 
-select(litters_df, starts_with("gd"))
+select(litters_df, starts_with("gd")) ##所有gd开头的
 
 select(litters_df, starts_with("gd"), group)
 
-select(litters_df, GROUP = group, everything())
+select(litters_df, GROUP = group, everything()) ##把group改名成GROUP，剩下的列都要
 
-select(litters_df, -starts_with("gd"))
+select(litters_df, -starts_with("gd")) ##删除所有gd开头的
 ```
 
 a couple of alternatives
 ```{r}
 rename(litters_df, GROUP = group)
 
-relocate(litters_df, litter_number, gd0_weight)
+relocate(litters_df, litter_number, gd0_weight) ##把这两个放到最前面
 ```
 
 In the pups data, seelct litter number, sex, and PD ears.
@@ -66,13 +66,13 @@ filter(litters_df, pups_born_alive <= 5)
 
 filter(litters_df, pups_born_alive != 6)
 
-filter(litters_df, group %in% c("Con7", "Con8"))
+filter(litters_df, group %in% c("Con7", "Con8")) ##只留下group是con7和con8的行
 
 filter(litters_df, group %in% c("Con7", "Con8"), pups_born_alive < 7)
 
 filter(litters_df, pups_born_alive < 4 | pups_born_alive > 8)
 
-drop_na(litters_df, gd0_weight)
+drop_na(litters_df, gd0_weight) ##qu diao que shi zhi 
 ```
 
 In the pups dataset, keep only rows where PD walk is less than 11 and sex is 2
@@ -123,11 +123,57 @@ litters_wt_gain_df = mutate(litters_no_na_df, wt_gain = gd18_weight - gd0_weight
 ```
 
 
+This is good:
+```{r}
+litters_df = 
+  read_csv("data/FAS_litters.csv", na = c("", "NA", ".")) |>
+  janitor::clean_names() |>
+  select(group, starts_with("gd")) |>
+  drop_na() |>
+  mutate(
+    wt_gain = gd18_weight - gd0_weight,
+    group = str_to_lower(group)
+  )
+```
 
+Load pups, clean names, drop missing, keep litter number and pd variables, add pd walk - 7
+```{r}
+pups_df = 
+  read_csv("data/FAS_pups.csv", skip = 3, na = c("", "NA", ".")) |>
+  janitor::clean_names() |>
+  drop_na() |>
+  select(litter_number, starts_with("pd")) |>
+  mutate(
+    pd_walk_minus_7 = pd_walk - 7
+  )
+  
+```
 
+sometime the first thing isn't a dataframe
+```{r}
+litters_df |>
+  lm(gd18_weight ~ gd0_weight, data = _)
+```
 
+`select` vs `pull`
+```{r}
+litters_df |>
+  select(group)
 
+litters_df |>
+  pull(group)
+```
 
+never do `$`
+```{r}
+litters_df$group
+```
+
+pipes and viewing
+```{r}
+litters_df |>
+  filter(group %in% c("Con7", "Con8"))
+```
 
 
 

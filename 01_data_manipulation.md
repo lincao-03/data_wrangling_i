@@ -100,7 +100,7 @@ select(litters_df, group:gd_of_birth) ##从group到gd_of_birth
     ## # ℹ 39 more rows
 
 ``` r
-select(litters_df, -group) ## 
+select(litters_df, -group) ##删除group
 ```
 
     ## # A tibble: 49 × 7
@@ -120,7 +120,7 @@ select(litters_df, -group) ##
     ## # ℹ 2 more variables: pups_dead_birth <dbl>, pups_survive <dbl>
 
 ``` r
-select(litters_df, starts_with("gd"))
+select(litters_df, starts_with("gd")) ##所有gd开头的
 ```
 
     ## # A tibble: 49 × 3
@@ -546,3 +546,29 @@ litters_with_gd_df = select(litters_rename_df, group, starts_with("gd"))
 litters_no_na_df =  drop_na(litters_with_gd_df)
 litters_wt_gain_df = mutate(litters_no_na_df, wt_gain = gd18_weight - gd0_weight)
 ```
+
+This is good:
+
+``` r
+litters_df = 
+  read_csv("data/FAS_litters.csv", na = c("", "NA", ".")) |>
+  janitor::clean_names() |>
+  select(group, starts_with("gd")) |>
+  drop_na() |>
+  mutate(
+    wt_gain = gd18_weight - gd0_weight,
+    group = str_to_lower(group)
+  )
+```
+
+    ## Rows: 49 Columns: 8
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (2): Group, Litter Number
+    ## dbl (6): GD0 weight, GD18 weight, GD of Birth, Pups born alive, Pups dead @ ...
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+Load pups, clean names, drop missing, keep group and pd variables, add
+pd walk - 7
